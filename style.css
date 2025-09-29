@@ -1,43 +1,47 @@
+/* Reset */
 *, *::before, *::after {
-    padding: 0;
-    margin: 0 auto;
-    box-sizing: border-box;
+  padding: 0;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
+/* Body styling */
 body {
   background-color: #000;
-  color: #fff;
-  min-height: 100vh;
   display: grid;
   place-items: center;
+  min-height: 100vh;
 }
 
+/* Swirl container */
 .swirl {
   --size: min(5vmin, 24px);
-  
   position: relative;
-  
-  i {
-    --x: calc(rem((sibling-index() - 1), 20) - 9.5);
-    --y: calc(9.5 - round(down, (sibling-index() - 1) / 20));
-
-    --n: calc((sibling-index() - 1) / (sibling-count() - 1));
-    --hue: calc(mod(sin(var(--n) * 90deg) * 3600, 1) * 360);
-    
-    --distance: calc(sqrt(var(--x) * var(--x) + var(--y) * var(--y)) / sqrt(200));
-    --angle: calc(atan2(var(--x), var(--y)) / -360deg);
-    --delay: calc(var(--distance) * 9s + var(--angle) * 3s - 12s);
-
-    position: absolute;
-    inset: calc(var(--size) * -0.5);
-    background-color: hsl(var(--hue) 100% calc(80% - var(--distance) * 60%));
-    border-radius: 25%;
-    translate: calc(var(--x) * var(--size)) calc(var(--y) * var(--size));
-    animation: sqr 1.5s var(--delay, 0s) infinite ease-in-out alternate;
-  }
+  width: calc(var(--size) * 20);
+  height: calc(var(--size) * 20);
 }
 
-@keyframes sqr {
-  from { scale: 0; }
-  to { scale: 0.9; }
+/* Each square */
+.swirl i {
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 25%;
+  animation: pulse 1.5s infinite ease-in-out alternate;
+}
+
+/* Position squares in a 20x20 grid */
+.swirl i:nth-child(n) {
+  --row: calc((n - 1) / 20);
+  --col: calc((n - 1) % 20);
+  left: calc(var(--col) * var(--size));
+  top: calc(var(--row) * var(--size));
+  background-color: hsl(calc(var(--col) * 18 + var(--row) * 9), 100%, 60%);
+  animation-delay: calc(var(--row) * 0.05s + var(--col) * 0.05s);
+}
+
+/* Animation keyframes */
+@keyframes pulse {
+  0% { transform: scale(0); }
+  100% { transform: scale(0.9); }
 }
