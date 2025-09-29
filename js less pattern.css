@@ -1,0 +1,50 @@
+/* Reset */
+*, *::before, *::after {
+  padding: 0;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+  background-color: #000;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+}
+
+/* Swirl container */
+.swirl {
+  --size: min(5vmin, 24px);
+  position: relative;
+  width: calc(var(--size) * 20);
+  height: calc(var(--size) * 20);
+}
+
+/* Each square */
+.swirl i {
+  position: absolute;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 25%;
+  animation: pulse 1.5s infinite ease-in-out alternate;
+}
+
+/* Position squares in a 20x20 grid using nth-child */
+.swirl i:nth-child(n) {
+  /* Row and column calculations */
+  --row: calc((n - 1) / 20);
+  --col: calc((n - 1) % 20);
+  left: calc(var(--col) * var(--size));
+  top: calc(var(--row) * var(--size));
+  /* Color based on position */
+  background-color: hsl(calc(var(--col) * 18 + var(--row) * 9), 100%, 60%);
+  /* Animation delay for wave effect */
+  animation-delay: calc(var(--row) * 0.05s + var(--col) * 0.05s);
+}
+
+/* Animation keyframes */
+@keyframes pulse {
+  0% { transform: scale(0); }
+  100% { transform: scale(0.9); }
+}
